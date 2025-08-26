@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trixxi Forest</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1b3a2f; /* тёмно-зелёный фон */
+      color: #fff;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Логотип */
+    #logo {
+      max-width: 500px;
+      min-width: 250px;
+      height: auto;
+      margin: 20px 0;
+      display: block;
+    }
+
+    h1 {
+      margin: 10px 0 30px 0;
+      font-size: clamp(1.8em, 5vw, 3em);
+      color: #f0e6d2;
+      text-align: center;
+    }
+
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .link-card {
+      display: block;
+      text-decoration: none;
+      background-color: #8b5a2b;
+      color: #fff;
+      padding: 20px 30px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+      text-align: left;
+      font-size: clamp(1em, 2.5vw, 1.2em);
+      word-break: break-word;
+    }
+
+    .link-card:hover {
+      background-color: #6b4221;
+      transform: scale(1.05);
+    }
+
+    .link-title {
+      font-weight: bold;
+      font-size: clamp(1.2em, 3vw, 1.4em);
+    }
+
+    .link-desc {
+      font-size: clamp(0.9em, 2.2vw, 1em);
+      margin-top: 6px;
+      color: #e0d9c4;
+    }
+
+    .link-icon {
+      margin-right: 10px;
+    }
+
+    /* Мобильные экраны */
+    @media (max-width: 800px) {
+      #logo {
+        max-width: 150px;
+      }
+      .link-card {
+        padding: 15px 20px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      #logo {
+        max-width: 120px;
+      }
+      h1 {
+        font-size: 1.8em;
+        margin: 10px 0 20px 0;
+      }
+      .link-card {
+        padding: 12px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <img id="logo" alt="Логотип">
+
+  <h1 id="title"></h1>
+
+  <div class="links-container" id="links"></div>
+
+  <script>
+    const v = Date.now(); // анти-кэш
+
+    fetch("data.json?v=" + v)
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById("logo").src = data.logo + "?v=" + v;
+        document.getElementById("title").textContent = data.title;
+
+        const linksDiv = document.getElementById("links");
+        linksDiv.innerHTML = data.links.map(l => `
+          <a href="${l.url}?v=${v}" target="_blank" class="link-card">
+            <span class="link-icon">${l.icon || ''}</span>
+            <span class="link-title">${l.name}</span>
+            <div class="link-desc">${l.desc || ''}</div>
+          </a>
+        `).join("");
+      })
+      .catch(err => {
+        document.getElementById("title").textContent = "Ошибка загрузки данных";
+        console.error(err);
+      });
+  </script>
+
+</body>
+</html>
