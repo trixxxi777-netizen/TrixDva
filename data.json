@@ -2,6 +2,12 @@
   "logo": "logo.png",
   "title": "Trixxi Forest",
   "links": [
+ {
+      "name": "about pl",
+      "url": "about.html",
+      "desc": "About🐈‍⬛",
+      "icon": "🎮"
+    },
     {
       "name": "Случайный котик",
       "url": "cottikki.html",
